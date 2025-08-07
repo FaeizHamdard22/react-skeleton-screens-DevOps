@@ -18,10 +18,10 @@ This project is originally cloned from [MahdiAtlas2004/react-skeleton-screens](h
 
 ---
 
-## 🛠 Requirements
+##  Requirements
 
 -  Docker
-- ⚙ Jenkins
+-  Jenkins
 -  Git installed
 -  Jenkins user in Docker group:
   ```bash
