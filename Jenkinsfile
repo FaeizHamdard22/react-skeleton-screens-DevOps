@@ -19,7 +19,7 @@ pipeline {
     stage('Run Docker Container') {
       steps {
         script {
-          sh "docker run -d -p 8080:80 --name react-skeleton-app react-skeleton-app || true"
+          sh "docker run -d -p 8081:80 --name react-skeleton-app react-skeleton-app || true"
         }
       }
     }
