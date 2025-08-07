@@ -1,4 +1,4 @@
-React Skeleton Screens – DevOps CI/CD Deployment
+## React Skeleton Screens – DevOps CI/CD Deployment
 
 This project is originally cloned from [MahdiAtlas2004/react-skeleton-screens](https://github.com/MahdiAtlas2004/react-skeleton-screens), then Dockerized and automated with Jenkins pipeline by [Faeiz Hamdard](https://github.com/FaeizHamdard22).
 
