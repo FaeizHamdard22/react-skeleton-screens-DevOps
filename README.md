@@ -1,70 +1,116 @@
-# Getting Started with Create React App
+````md
+# React Skeleton Screens – DevOps CI/CD Deployment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is originally cloned from [MahdiAtlas2004/react-skeleton-screens](https://github.com/MahdiAtlas2004/react-skeleton-screens), then Dockerized and automated with Jenkins pipeline by [Faeiz Hamdard](https://github.com/FaeizHamdard22).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+##  What Was Added
 
-### `npm start`
+-  `Dockerfile` – Multi-stage Docker build for React + Nginx
+-  `Jenkinsfile` – CI/CD pipeline for automated build & deploy
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+##  Repository
 
-### `npm test`
+**This repo:**  
+`https://github.com/FaeizHamdard22/react-skeleton-screens-DevOps`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🛠 Requirements
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-  Docker
+- ⚙ Jenkins
+-  Git installed
+-  Jenkins user in Docker group:
+  ```bash
+  sudo usermod -aG docker jenkins
+  sudo systemctl restart jenkins
+````
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+##  How to Run the Pipeline
 
-### `npm run eject`
+### 1. Clone This Repo into Jenkins Project
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+In Jenkins > New Item:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Type: **Pipeline**
+* Name: `react-skeleton-devops`
+* In Pipeline settings:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  * `Git URL`:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    ```
+    https://github.com/FaeizHamdard22/react-skeleton-screens-DevOps.git
+    ```
+  * `Branch`: `main`
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 2. Jenkinsfile Overview
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```groovy
+pipeline {
+  agent any
 
-### Code Splitting
+  stages {
+    stage('Checkout') {
+      steps {
+        git 'https://github.com/FaeizHamdard22/react-skeleton-screens-DevOps.git'
+      }
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t react-skeleton-app .'
+      }
+    }
 
-### Analyzing the Bundle Size
+    stage('Run Docker Container') {
+      steps {
+        sh 'docker run -d -p 8081:80 react-skeleton-app'
+      }
+    }
+  }
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+##  Test the App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Once pipeline completes successfully, open your browser:
 
-### Advanced Configuration
+```text
+http://YOUR_SERVER_IP:8081
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If Jenkins is on public server → replace `YOUR_SERVER_IP` with actual IP or domain.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+##  Manual Docker Build (Optional)
 
-### `npm run build` fails to minify
+```bash
+git clone https://github.com/FaeizHamdard22/react-skeleton-screens-DevOps.git
+cd react-skeleton-screens-DevOps
+docker build -t react-skeleton-app .
+docker run -d -p 8081:80 react-skeleton-app
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Credits
+
+Original frontend project by:
+[MahdiAtlas2004](https://github.com/MahdiAtlas2004/react-skeleton-screens)
+
+CI/CD & Docker setup by:
+[Faeiz Hamdard](https://github.com/FaeizHamdard22)
+
+---
+
